@@ -64,4 +64,4 @@ You must build a web application that:
 # Submission
 
 Fork this repository and create a pull request for your branch back into
-this repo once completed.
+this repo once completed
