@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import songsRoute from './routes/songsRoute.js';
 import cors from 'cors';
 
+require('dotenv').config();
 const app = express();
 
 //for parsing JSON

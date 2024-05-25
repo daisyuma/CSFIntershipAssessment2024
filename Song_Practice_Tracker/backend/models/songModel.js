@@ -5,13 +5,13 @@ const songSchema = mongoose.Schema(
             type: String,
             required: true,
         }, 
-        composer: {
+        artist: {
             type: String,
             required: true,
         },
-        year: {
+        startDate: {
             type: Number, 
-            required: false,
+            required: true,
         },
     }, 
     {
