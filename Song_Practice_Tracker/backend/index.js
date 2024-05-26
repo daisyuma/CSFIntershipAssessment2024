@@ -3,8 +3,7 @@ import { PORT, mondoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import songsRoute from './routes/songsRoute.js';
 import cors from 'cors';
-
-require('dotenv').config();
+import "dotenv/config.js";
 const app = express();
 
 //for parsing JSON

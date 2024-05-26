@@ -6,7 +6,6 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { BsInfoCircle } from 'react-icons/bs';
 import { MdOutlineDelete, MdOutlineAddBox } from 'react-icons/md';
 
-
 const Home = () => {
     const [songs, setSongs] = useState([]);
     const [loading, setLoading] = useState(false);
