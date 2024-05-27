@@ -7,8 +7,8 @@ import SearchButton from '../components/SearchButton';
 import * as qs from 'qs';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const CLIENT_ID = "648218c2532545d08a03317db36a93bd";
-const CLIENT_SECRET = "51b450fb42694ce2958687758a68d64b";
+const CLIENT_ID = "";
+const CLIENT_SECRET = "";
 
 const ShowSong = () => {
   const [accessToken, setAccessToken] = useState("");

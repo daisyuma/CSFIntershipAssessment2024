@@ -64,7 +64,7 @@ const Home = () => {
                                         <Link to={`/songs/details/${song._id}`}>
                                             <BsInfoCircle className='text-2xl text-green-800' />
                                         </Link>
-                                        <Link to={`/songss/edit/${song._id}`}>
+                                        <Link to={`/songs/edit/${song._id}`}>
                                             <AiOutlineEdit className='text-2xl text-yellow-600' />
                                         </Link>
                                         <Link to={`/songs/delete/${song._id}`}>
