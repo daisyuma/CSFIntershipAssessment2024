@@ -2,14 +2,21 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Spinner from '../components/Spinner';
 import { Link } from 'react-router-dom';
+import BackButton from '../components/BackButton';
+import SearchButton from '../components/SearchButton';
 import * as qs from 'qs';
+import { useParams, useNavigate } from 'react-router-dom';
+
 const CLIENT_ID = "648218c2532545d08a03317db36a93bd";
 const CLIENT_SECRET = "51b450fb42694ce2958687758a68d64b";
 
 const ShowSong = () => {
-  const [searchInput, setSearchInput] = useState("");
   const [accessToken, setAccessToken] = useState("");
-  const [albums, setAlbums] = useState([])
+  const [song, setSong] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const [artistUrl, setArtistUrl] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // var auth = {
@@ -19,6 +26,18 @@ const ShowSong = () => {
     //         },
     //   body: 'grant_type=client_credentials&client_id=' + CLIENT_ID + '&client_secret='+ CLIENT_SECRET
     // }
+    setLoading(true);
+    axios
+      .get(`http://localhost:5555/songs/${id}`)
+      .then((response) => {
+        setSong(response.data);
+        setLoading(false);
+        console.log("line 32")
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
     const headers = {
       headers: {
         Accept: 'application/json',
@@ -43,16 +62,12 @@ const ShowSong = () => {
       console.log(response.data.access_token)
       setAccessToken(response.data.access_token)
     })
-    .then(() =>{
-      setSearchInput("Hillsong United")
-    })
-    .then(search())
   }, [])
 
   //Search
-  async function search() {
-    console.log("line 53 " + searchInput)
-    console.log("Searching for "+ searchInput); 
+  const search = () => {
+    console.log("line 53 " + song.artist)
+    console.log("Searching for "+ song.artist); 
     //Get Artist ID
     var artistParameters = {
       method: 'GET',
@@ -64,8 +79,8 @@ const ShowSong = () => {
     // var artistID = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist', artistParameters)
     // .then(response => response.json())
     // .then(data => console.log(data))
-    var artistId = await axios
-    .get('https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist',
+    var artistId = axios
+    .get('https://api.spotify.com/v1/search?q=' + song.artist + '&type=artist',
     {
       headers: {
         Accept: 'application/json',
@@ -75,36 +90,42 @@ const ShowSong = () => {
     }
     )
     .then((response) => {
-        return response.data.artists.items[0].id
+        console.log('artist: ' + response.data.artists.items[0].external_urls.spotify);
+        window.location.href = response.data.artists.items[0].external_urls.spotify;
     }
     )
-    console.log('artistId: ' + artistId);
-    var returnedAlbums  = 
-    // await fetch('https://api.spotify.com/v1/artists/' + artistId + '/albums' + '?include_groups=album&market=US&limit=50', artistParameters)
-    // .then(response => response.json())
-    await axios
-    .get('https://api.spotify.com/v1/artists/' + artistId + '/albums' + '?include_groups=album&market=US&limit=50',
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
-    )
-    .then((response) => {
-      setAlbums(response.data.items)
-      console.log(response.data)
-      return response.data
-    }
-    );
-    //Get all albums with Artist ID
-
-    // Display all albums
      
   }
   return (
-    <div>ShowSong</div>
+    <div className='p-4'>
+      <BackButton />
+      <h1 className='text-3xl my-4'>Show Song</h1>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className='flex flex-col border-2 border-sky-400 rounded-xl w-fit p-4'>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Id</span>
+            <span>{song._id}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Title</span>
+            <span>{song.title}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Artist</span>
+            <span>{song.artist}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Practice Start Date</span>
+            <span>{song.startDate}</span>
+          </div>
+          <button className='p-2 bg-sky-300 m-8' onClick={search}>
+          View Artist on Spotify
+        </button>
+        </div>
+      )}
+    </div>
   )
 }
 

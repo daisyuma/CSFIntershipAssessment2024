@@ -41,6 +41,7 @@ const Home = () => {
                             <th className='border border-slate-600 rounded-md'>Title</th>
                             <th className='border border-slate-600 rounded-md'>Artist</th>
                             <th className='border border-slate-600 rounded-md'>Practice Start Date</th>
+                            <th className='border border-slate-600 rounded-md'>Operations</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +60,17 @@ const Home = () => {
                                     {song.startDate}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
+                                    <div className='flex justify-center gap-x-4'>
+                                        <Link to={`/songs/details/${song._id}`}>
+                                            <BsInfoCircle className='text-2xl text-green-800' />
+                                        </Link>
+                                        <Link to={`/songss/edit/${song._id}`}>
+                                            <AiOutlineEdit className='text-2xl text-yellow-600' />
+                                        </Link>
+                                        <Link to={`/songs/delete/${song._id}`}>
+                                            <MdOutlineDelete className='text-2xl text-red-600' />
+                                        </Link>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
